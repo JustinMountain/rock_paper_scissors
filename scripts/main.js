@@ -9,24 +9,23 @@ if (window.confirm("Do you want to play Rock, Paper, Scissors?"))
     // Convert to lower case and check if input is valid for the game
 
 function playerSelection() {
+    let playerValue;
     let inputValue = window.prompt("Choose your weapon: Rock, Paper, or Scissors");
     inputValue = inputValue.toLowerCase();
     
     if (inputValue == "rock") {
-        let playerValue = inputValue;
-        return playerValue;
+        playerValue = inputValue;
     }
     else if (inputValue == "paper") {
-        let playerValue = inputValue;
-        return playerValue;
+        playerValue = inputValue;
     }
     else if (inputValue == "scissors") {
-        let playerValue = inputValue;
-        return playerValue;
+        playerValue = inputValue;
     }
     else {
         playerSelection();
     }
+    return playerValue;
 }
 
 // Have the computer choose between RPS
@@ -40,21 +39,19 @@ function computerPlay() {
 
     if (rpsValue == 0) {
         computerSelection = "rock";
-        return computerSelection;
     }
     else if (rpsValue == 1) {
         computerSelection = "paper";
-        return computerSelection;    
     }
     else if (rpsValue == 2) {
         computerSelection = "scissors";
-        return computerSelection;    
     }
+    return computerSelection;
 }
 
 // create playRound() which takes in playerValue and computerSelection
     // determine winner
-// return winner
+    // return winner
 
 function playRound(playerValue, computerSelection) {
     let winner;
@@ -63,15 +60,12 @@ function playRound(playerValue, computerSelection) {
     if (playerValue == "rock") {
         if (computerSelection == "paper") {
             winner = "computer";
-            return winner;
         }
         else if (computerSelection == "scissors") {
             winner = "player";
-            return winner;
         }
         else {
             winner = "none";
-            return winner;
         }
     }
 
@@ -79,15 +73,12 @@ function playRound(playerValue, computerSelection) {
     else if (playerValue == "paper") {
         if (computerSelection == "scissors") {
             winner = "computer";
-            return winner;
         }
         else if (computerSelection == "rock") {
             winner = "player";
-            return winner;
         }
         else {
             winner = "none";
-            return winner;
         }
     }
 
@@ -95,17 +86,15 @@ function playRound(playerValue, computerSelection) {
     else if (playerValue == "scissors") {
         if (computerSelection == "rock") {
             winner = "computer";
-            return winner;
         }
         else if (computerSelection == "paper") {
             winner = "player";
-            return winner;
         }
         else {
             winner = "none";
-            return winner;
         }
     }
+    return winner;
 }
 
 function playRPS() {
