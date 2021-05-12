@@ -26,7 +26,6 @@ header {
 }
 
 main {
-    background-color: yellow;
     text-align: center;
     margin-top: 10em;
 }
@@ -52,35 +51,32 @@ h3 {
 }
 
 .choice {
-    background-color: darkblue;
     height: 5em;
     width: 5em;
     padding: 1em;
+    border-radius: 10px;
 }
 
-.rock::before {
+.choice:hover {
+    box-shadow: 1px 1px 10px 10px black;
+    cursor: pointer;
+}
+
+#rock::before {
     font-family: "Font Awesome 5 Free";
     font-weight: 900;
     content: '\f6de';
     font-size: 5em;
 }
 
-.paper {
-    transform: scaleX(-1);
-}
-
-.paper::before {
+#paper::before {
     font-family: "Font Awesome 5 Free";
     font-weight: 900;
     content: '\f256';
     font-size: 5em;
 }
 
-.scissors {
-    transform: rotate(90deg);
-}
-
-.scissors::before {
+#scissors::before {
     font-family: "Font Awesome 5 Free";
     font-weight: 900;
     content: '\f257';
@@ -90,4 +86,3 @@ h3 {
 .rounds {
     min-height: 25em;
 }
-

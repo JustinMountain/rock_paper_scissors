@@ -1,32 +1,42 @@
-// Generic yes no prompt for playing?
+// add event listener to class choice
+    // set playerValue based on which choice was made
 
-if (window.confirm("Do you want to play Rock, Paper, Scissors?"))
-    {
-        playRPS();
-    }
+const choices = document.querySelectorAll('.choice');
 
-// Prompt the user for a string input (RPS)
-    // Convert to lower case and check if input is valid for the game
+let round = 0;
 
-function playerSelection() {
-    let playerValue;
-    let inputValue = window.prompt("Choose your weapon: Rock, Paper, or Scissors");
-    inputValue = inputValue.toLowerCase();
-    
-    if (inputValue == "rock") {
-        playerValue = inputValue;
-    }
-    else if (inputValue == "paper") {
-        playerValue = inputValue;
-    }
-    else if (inputValue == "scissors") {
-        playerValue = inputValue;
-    }
-    else {
-        playerSelection();
-    }
-    return playerValue;
-}
+choices.forEach((choice) => {
+    choice.addEventListener('click', () => {
+        let playerValue = choice.id;
+        let victor = playRound(playerValue, computerPlay());
+        
+        // Modify the h3 declaring the winner
+        const winnerDeclaration = document.querySelector('.winnerDeclaration');
+
+        if (victor == "none") {
+            winnerDeclaration.textContent = "It was a draw.";
+            round++;
+        } else if (victor == "player") {
+            winnerDeclaration.textContent = "This round went to you.";
+            round++;
+        } else if (victor == "computer") {
+            winnerDeclaration.textContent = "The AI successfully predicted your move.";
+            round++;
+        } else {
+            winnerDeclaration.textContent = "Something went awry.";
+        }
+
+        // Draw a div which includes the plays, winner, and score
+
+        const roundDeclarationSpace = document.querySelector('.rounds');
+
+        const roundWinner = document.createElement('div');
+        roundWinner.textContent = "Round " + round + " goes to " + victor;
+
+        roundDeclarationSpace.prepend(roundWinner);
+
+    });
+});
 
 // Have the computer choose between RPS
 function computerPlay() {
@@ -129,9 +139,9 @@ function playRPS() {
         }
     }
     
-    // After the game is completed, ask if the user wants to play again.
-    if (window.confirm("Would you like to play again?"))
-    {
-        playRPS();
-    }
+    // // After the game is completed, ask if the user wants to play again.
+    // if (window.confirm("Would you like to play again?"))
+    // {
+    //     playRPS();
+    // }
 }
