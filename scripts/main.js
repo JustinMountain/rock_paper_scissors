@@ -1,43 +1,3 @@
-// add event listener to class choice
-    // set playerValue based on which choice was made
-
-const choices = document.querySelectorAll('.choice');
-
-let round = 0;
-
-choices.forEach((choice) => {
-    choice.addEventListener('click', () => {
-        let playerValue = choice.id;
-        let victor = playRound(playerValue, computerPlay());
-        
-        // Modify the h3 declaring the winner
-        const winnerDeclaration = document.querySelector('.winnerDeclaration');
-
-        if (victor == "none") {
-            winnerDeclaration.textContent = "It was a draw.";
-            round++;
-        } else if (victor == "player") {
-            winnerDeclaration.textContent = "This round went to you.";
-            round++;
-        } else if (victor == "computer") {
-            winnerDeclaration.textContent = "The AI successfully predicted your move.";
-            round++;
-        } else {
-            winnerDeclaration.textContent = "Something went awry.";
-        }
-
-        // Draw a div which includes the plays, winner, and score
-
-        const roundDeclarationSpace = document.querySelector('.rounds');
-
-        const roundWinner = document.createElement('div');
-        roundWinner.textContent = "Round " + round + " goes to " + victor;
-
-        roundDeclarationSpace.prepend(roundWinner);
-
-    });
-});
-
 // Have the computer choose between RPS
 function computerPlay() {
     // Choose a random number between 0-2
@@ -108,40 +68,148 @@ function playRound(playerValue, computerSelection) {
 }
 
 function playRPS() {
+    let round = 1;
     let playerScore = 0;
     let computerScore = 0;
     let winnerDeclared = false;
-
-    // Continue until a winner is declared for the game
-    while (!winnerDeclared) {
-        let winner = playRound(playerSelection(), computerPlay());
-
-        // When the player wins a round, increase score and output new totals
-        if (winner == "player") {
-            playerScore++;
-            console.log("(" + playerScore + " - " + computerScore + ") You won this round.");
-                if (playerScore >= 5) {
-                    console.log("You triumphed over the computer.")
-                    winnerDeclared = true;
-                }
-        }
-        // When the computer wins a round, increase score and output new totals
-        else if (winner == "computer") {
-            computerScore++;
-            console.log("(" + playerScore + " - " + computerScore + ") The computer won this round.");
-                if (computerScore >= 5) {
-                    console.log("The computer beat you.")
-                    winnerDeclared = true;
-                }
-        }
-        else {
-            console.log("(" + playerScore + " - " + computerScore + ") It was a draw.");
-        }
-    }
     
-    // // After the game is completed, ask if the user wants to play again.
-    // if (window.confirm("Would you like to play again?"))
-    // {
-    //     playRPS();
-    // }
+    // add event listener to class choice
+    // set playerValue based on which choice was made
+    
+    const choices = document.querySelectorAll('.choice');
+    
+    choices.forEach((choice) => {
+        choice.addEventListener('click', () => {
+            let playerValue = choice.id;
+            let computerValue = computerPlay();
+            let victor = playRound(playerValue, computerValue);
+            
+            // Modify the p declaring the winner
+            const winnerDeclaration = document.querySelector('.winnerDeclaration');
+    
+            const roundDeclarationSpace = document.querySelector('.rounds');
+    
+            // Draw a div for the round
+            const thisRound = document.createElement('div');
+    
+                // create h3 containing the round #
+                const roundNumber = document.createElement('h3');
+                roundNumber.textContent = "Round " + round;
+        
+                    // append h3 to div
+                    thisRound.appendChild(roundNumber);
+    
+                // create a div for round details 
+                const roundDetails = document.createElement('div');
+                
+                    // creat 5 spans for details
+                    const spanPS = document.createElement('span');
+                    const spanPV = document.createElement('span');
+                    const spanDash = document.createElement('span');
+                        spanDash.textContent = " - ";
+                    const spanCV = document.createElement('span');
+                    const spanCS = document.createElement('span');
+    
+                    // append as children to roundDetails
+                    roundDetails.appendChild(spanPS);
+                    roundDetails.appendChild(spanPV);
+                    roundDetails.appendChild(spanDash);
+                    roundDetails.appendChild(spanCV);
+                    roundDetails.appendChild(spanCS);
+    
+                    // append div to round
+                    thisRound.appendChild(roundDetails);
+    
+                    // prepend round to roundDeclarationSpace
+                    roundDeclarationSpace.prepend(thisRound);
+                        
+            // Round was a draw
+            if (victor == "none") 
+                {
+                    winnerDeclaration.textContent = "Round " + round + " was a draw.";
+                    spanPS.textContent = playerScore;
+                    spanCS.textContent = computerScore;
+    
+                    if (playerValue == "rock") {
+                        spanPV.setAttribute('id', "rock")
+                        spanCV.setAttribute('id', "rock")
+                    }
+                    else if (playerValue == "paper") {
+                        spanPV.setAttribute('id', "paper")
+                        spanCV.setAttribute('id', "paper")
+                    }
+                    else if (playerValue == "scissors") {
+                        spanPV.setAttribute('id', "scissors")
+                        spanCV.setAttribute('id', "scissors")
+                    }
+                } 
+            // Player victory 
+            else if (victor == "player") 
+                {
+                    winnerDeclaration.textContent = "Round " + round + " went to you.";
+                    playerScore++;
+                    spanPS.textContent = playerScore;
+                    spanCS.textContent = computerScore;
+    
+                    if (playerValue == "rock") {
+                        spanPV.setAttribute('id', "rock");
+                        spanPV.classList.add('winner');
+                        spanCV.setAttribute('id', "scissors");
+                    }
+                    else if (playerValue == "paper") {
+                        spanPV.setAttribute('id', "paper");
+                        spanPV.classList.add('winner');
+                        spanCV.setAttribute('id', "rock");
+                    }
+                    else if (playerValue == "scissors") {
+                        spanPV.setAttribute('id', "scissors");
+                        spanPV.classList.add('winner');
+                        spanCV.setAttribute('id', "paper");
+                    }
+
+                    if (playerScore >= 5) {
+                        winnerDeclared = true;
+                        console.log("The player has won");
+                        return;
+                    }
+                } 
+            // Computer victory
+            else if (victor == "computer") 
+                {
+                    winnerDeclaration.textContent = "The AI successfully predicted your move for round " + round + " .";
+                    computerScore++;
+                    spanPS.textContent = playerScore;
+                    spanCS.textContent = computerScore;
+    
+                    if (computerValue == "rock") {
+                        spanCV.setAttribute('id', "rock");
+                        spanCV.classList.add('winner');
+                        spanPV.setAttribute('id', "scissors");
+                    }
+                    else if (computerValue == "paper") {
+                        spanCV.setAttribute('id', "paper");
+                        spanCV.classList.add('winner');
+                        spanPV.setAttribute('id', "rock");
+                    }
+                    else if (computerValue == "scissors") {
+                        spanCV.setAttribute('id', "scissors");
+                        spanCV.classList.add('winner');
+                        spanPV.setAttribute('id', "paper");
+                    }
+                    if (computerScore >= 5) {
+                        winnerDeclared = true;
+                        console.log("The computer has won");
+                        return;
+                    }
+                } 
+            // Catch-all case for extenuating circumstances
+               else 
+                {
+                    winnerDeclaration.textContent = "Something went awry.";
+                }
+                        
+            // Increment round counter
+            round++;
+        });
+    });
 }
