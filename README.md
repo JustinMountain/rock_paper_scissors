@@ -1,6 +1,10 @@
 # rock_paper_scissors
 Rock, Paper, Scissors project for The Odin Project
 
+2021-05-13
+Added AbortController() to clear the bug causing the game to continue past a score of 5
+Simple UI has been established; it's time to move on to the next assignment
+
 2021-05-12
 Established basic UI and code base
  - Still need to make it look nice

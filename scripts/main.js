@@ -68,18 +68,26 @@ function playRound(playerValue, computerSelection) {
 }
 
 function playRPS() {
+    const controller = new AbortController();
+
     let round = 1;
     let playerScore = 0;
     let computerScore = 0;
     let winnerDeclared = false;
-    
+
+    // logic to determine the number of rounds to play
+    // let maxScore;
+
     // add event listener to class choice
     // set playerValue based on which choice was made
     
     const choices = document.querySelectorAll('.choice');
     
     choices.forEach((choice) => {
-        choice.addEventListener('click', () => {
+
+        choice.addEventListener('click', gameLogic, { signal: controller.signal } );
+
+        function gameLogic() {
             let playerValue = choice.id;
             let computerValue = computerPlay();
             let victor = playRound(playerValue, computerValue);
@@ -91,6 +99,7 @@ function playRPS() {
     
             // Draw a div for the round
             const thisRound = document.createElement('div');
+                thisRound.classList.add('thisRound');
     
                 // create h3 containing the round #
                 const roundNumber = document.createElement('h3');
@@ -101,14 +110,22 @@ function playRPS() {
     
                 // create a div for round details 
                 const roundDetails = document.createElement('div');
+                roundDetails.classList.add('roundDetails');
                 
-                    // creat 5 spans for details
+                    // create 5 spans for details
                     const spanPS = document.createElement('span');
                     const spanPV = document.createElement('span');
                     const spanDash = document.createElement('span');
-                        spanDash.textContent = " - ";
                     const spanCV = document.createElement('span');
                     const spanCS = document.createElement('span');
+
+                    // add detailSpan class and "-" content for the dash
+                    spanPS.classList.add('score');
+                    spanPV.classList.add('roundValue');
+                    spanDash.classList.add('dash');
+                        spanDash.textContent = " - ";
+                    spanCV.classList.add('roundValue');
+                    spanCS.classList.add('score');
     
                     // append as children to roundDetails
                     roundDetails.appendChild(spanPS);
@@ -166,17 +183,11 @@ function playRPS() {
                         spanPV.classList.add('winner');
                         spanCV.setAttribute('id', "paper");
                     }
-
-                    if (playerScore >= 5) {
-                        winnerDeclared = true;
-                        console.log("The player has won");
-                        return;
-                    }
                 } 
             // Computer victory
             else if (victor == "computer") 
                 {
-                    winnerDeclaration.textContent = "The AI successfully predicted your move for round " + round + " .";
+                    winnerDeclaration.textContent = "The AI successfully predicted your move for round " + round + ".";
                     computerScore++;
                     spanPS.textContent = playerScore;
                     spanCS.textContent = computerScore;
@@ -196,20 +207,29 @@ function playRPS() {
                         spanCV.classList.add('winner');
                         spanPV.setAttribute('id', "paper");
                     }
-                    if (computerScore >= 5) {
-                        winnerDeclared = true;
-                        console.log("The computer has won");
-                        return;
-                    }
                 } 
             // Catch-all case for extenuating circumstances
-               else 
-                {
-                    winnerDeclaration.textContent = "Something went awry.";
-                }
+            else 
+            {
+                winnerDeclaration.textContent = "Something went awry.";
+            }
+
+            // Check for game over status
+
+            if (playerScore >= 5) {
+                winnerDeclared = true;
+                winnerDeclaration.textContent = "You won! Refresh the page to play again.";
+                console.log("The player has won");
+                controller.abort();
+            } else if (computerScore >= 5) {
+                winnerDeclared = true;
+                winnerDeclaration.textContent = "You were outsmarted. Refresh the page to try again.";
+                console.log("The computer has won");
+                controller.abort();
+            }
                         
             // Increment round counter
             round++;
-        });
+        };
     });
 }
